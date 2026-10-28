@@ -23,6 +23,10 @@ See [workflow documentation](docs/workflow.md) for contracts, the external-agent
 
 See [generation instructions and validation evidence](docs/generation.md). The release covers 30 months, 300 accounts and three interacting mechanisms, with explicit simulation and isolation limitations. Generated files remain outside Git.
 
+## Database integration
+
+A PostgreSQL/Supabase schema and transactional import preparer are available. They are **prepared, not applied**; no database load has been verified. See [Supabase setup and status](docs/supabase.md).
+
 ## Agreed direction
 
 Research the target organization first, then propose a recognizable business slice with declared dimensions and hierarchies, multiple purchasers per customer, and tens of thousands of transaction rows spanning at least two full years. Year-over-year comparisons are a core requirement. Review the dimension blueprint and stories together before generation.
