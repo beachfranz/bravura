@@ -25,7 +25,7 @@ See [generation instructions and validation evidence](docs/generation.md). The r
 
 ## Database integration
 
-A PostgreSQL/Supabase schema and transactional import preparer are available. They are **prepared, not applied**; no database load has been verified. See [Supabase setup and status](docs/supabase.md).
+The Apple operational release is loaded and verified in Supabase’s restricted `bravura_demo` schema: 24 tables, 50,000 order lines and 30 months of transactions. The answer key is excluded. Analyst access and blind evaluation remain pending. See [Supabase setup and status](docs/supabase.md).
 
 ## Agreed direction
 

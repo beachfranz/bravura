@@ -1,8 +1,8 @@
-# Supabase integration — prepared, not applied
+# Supabase integration — loaded and verified
 
 Target supplied by the user: `https://udczuujwgyqgibfkuszg.supabase.co`.
 
-Supabase installation is confirmed. At preparation time, its project/schema/SQL tools were not exposed to this session. No remote tables have been inspected or created, and no data has been loaded. A repository link alone does not provide database credentials or trigger this import.
+On 2026-10-28, the connected Supabase tools verified project `udczuujwgyqgibfkuszg` (`bravura`, PostgreSQL 17) and found no existing public/demo tables. Migration `create_bravura_operational_demo` created the schema. The operational release was loaded through client-supplied SQL in dependency order. Each batch committed separately; this hosted load was not a single atomic transaction. No answer key or scenario definitions were loaded. A repository link alone does not trigger imports or refreshes.
 
 ## Prepared design
 
@@ -25,12 +25,16 @@ cd outputs/postgres-import-new
 psql "$DATABASE_URL" -X -v ON_ERROR_STOP=1 -f import.psql
 ```
 
-Do not run blindly or put credentials in Git/chat. The application should ultimately use the connected Supabase tools or an authenticated loader; this psql export is a prepared fallback, not a completed connection.
+Do not run blindly or put credentials in Git/chat. The psql export is an alternative for an empty destination; the hosted project was loaded through the connected Supabase tools.
 
 The script creates a new schema, loads all tables in one transaction, forces deferred constraints, verifies every row count, then commits. It does not drop, truncate, replace or silently skip existing tables. If `bravura_demo` already exists, creation fails and the import must be reconciled with that existing state rather than rerun destructively. There is no automated refresh/replace workflow yet.
 
 ## Verification boundary and next steps
 
-Offline tests check typing, privilege defaults, transaction structure, checksums, unexpected private files and no-overwrite behavior. PostgreSQL execution has not been tested in this session. Generator validation remains the source of cross-row temporal/economic checks; not every generator invariant is implemented as a database constraint.
+Offline tests check typing, privilege defaults, transaction structure, checksums, unexpected private files and no-overwrite behavior. Hosted SQL checks now verify all 24 release table counts, including 50,000 order lines, 25,000 orders, 300 accounts and 1,026 purchasers. Transactions span 2024-01-01 through 2026-06-30, totaling 830,179 units.
 
-Once SQL tools are available: verify project identity; list existing schemas/tables/migrations; apply the reviewed schema through the supported migration path; load the operational tables; verify 50,000 order lines, 25,000 orders, 300 accounts and 1,026 purchasers plus all other manifest counts; reconcile financial totals and joins; then establish read-only access appropriate to the analyst. No blind-analysis isolation claim is made until that access is tested.
+Financial reconciliation (integer USD cents): revenue 90,619,154,300; gross profit 23,658,733,920; contribution 23,417,515,442; refunds 1,104,611,000; net return cost 456,586,960. Revenue after returns is 89,514,543,300 and contribution after returns is 22,960,928,482. These match the validated operational release exactly. These are synthetic commercial-slice figures, not Apple's reported results.
+
+Hosted checks found zero cost/version/date mismatches, zero shipment or line fulfillment-allocation discrepancies, zero invalid return quantities/dates, and zero unvalidated database constraints. All 24 tables have RLS enabled. Neither anon nor authenticated has schema usage. The security advisor returned only 24 informational [RLS enabled without policies](https://supabase.com/docs/guides/database/database-linter?lint=0008_rls_enabled_no_policy) findings: intentional default-deny access pending a dedicated reader role. Owner access is available in the Supabase dashboard by selecting `bravura_demo`.
+
+Generator validation remains the source of the broader combined-scenario checks; not every generator invariant is implemented as a database constraint. Dedicated analyst access, negative access tests, and a fresh-context analyst evaluation remain pending. The public repository contains authoring material and must not be available to the blind analyst.
