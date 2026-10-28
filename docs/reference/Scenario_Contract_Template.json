@@ -1,0 +1,66 @@
+{
+  "status": "Design template; not an implemented Bravura schema",
+  "scenario_id": "replace_me",
+  "scenario_version": "0.1.0",
+  "business_decision": {
+    "question": "",
+    "audience": "",
+    "owner": "",
+    "constraints": []
+  },
+  "scope": {
+    "entity_grain": "",
+    "entity_selection": {},
+    "start_date": null,
+    "end_date": null,
+    "reporting_cutoff": null
+  },
+  "baseline": {
+    "seasonality": {},
+    "normal_variation": {},
+    "comparison_population": {}
+  },
+  "mechanism": {
+    "events": [],
+    "dependency_order": [],
+    "parameter_ranges": {},
+    "time_lags": {}
+  },
+  "operational_evidence": [],
+  "economic_policy": {
+    "metric_definitions": {},
+    "missing_cost_policy": "unknown_not_zero",
+    "rounding_policy": null,
+    "expected_effect_bounds": {},
+    "reconciliation_tolerance": null
+  },
+  "comparison_bases": [],
+  "alternative_explanations": [],
+  "permitted_conclusions": [],
+  "prohibited_conclusions": [],
+  "interactions": {
+    "shared_populations": [],
+    "composition_order": [],
+    "attribution_method": null,
+    "residual_policy": null
+  },
+  "reproducibility": {
+    "seed": null,
+    "generator_version": null,
+    "dependency_versions": {},
+    "input_checksums": {}
+  },
+  "evaluation": {
+    "required_findings": [],
+    "required_evidence": [],
+    "quantification_basis": null,
+    "thresholds": {},
+    "abstention_expectations": []
+  },
+  "publication": {
+    "analyst_allowlist": [],
+    "private_assets": [],
+    "leakage_checks": []
+  },
+  "release_checks": []
+}
