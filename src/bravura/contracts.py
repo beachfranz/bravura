@@ -3,7 +3,8 @@
 These are executable v1 contracts, separate from the reference design template.
 Validation establishes structural consistency, not real-world source truth.
 """
-from datetime import date
+from datetime import date, timedelta
+from calendar import monthrange
 from hashlib import sha256
 import json
 import re
@@ -83,6 +84,12 @@ def brief(data):
     end = day(data.get("end_date"), "brief.end_date")
     cutoff = day(data.get("reporting_cutoff"), "brief.reporting_cutoff")
     require(start <= end <= cutoff, "brief: start <= end <= cutoff required")
+    require(start.year <= 9997, "brief: start year cannot support two years of history")
+    # Inclusive end: Jan 1, 2024 through Dec 31, 2025 is two full years.
+    anniversary = date(start.year + 2, start.month,
+                       min(start.day, monthrange(start.year + 2, start.month)[1]))
+    require(end >= anniversary - timedelta(days=1),
+            "brief: at least two full years (24 months) of transaction history required")
     integer(data.get("order_lines"), "brief.order_lines", 10000, 1000000)
     budget = obj(data.get("budget"), "brief.budget")
     integer(budget.get("sources_per_role"), "sources_per_role", 1, 30)

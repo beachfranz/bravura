@@ -42,6 +42,25 @@ class Contracts(unittest.TestCase):
             with self.subTest(field=field), self.assertRaises(c.Invalid):
                 c.bundle(data)
 
+    def test_two_year_minimum_inclusive_boundaries(self):
+        for start, end, accepted in [
+            ('2024-01-01', '2025-12-31', True),
+            ('2024-01-01', '2025-12-30', False),
+            ('2023-07-15', '2025-07-14', True),
+            ('2023-07-15', '2025-07-13', False),
+            ('2024-02-29', '2026-02-27', True),
+            ('2024-02-29', '2026-02-26', False),
+            ('2022-01-01', '2025-12-31', True),
+        ]:
+            data = fixture()['brief']
+            data.update(start_date=start, end_date=end, reporting_cutoff=end)
+            with self.subTest(start=start, end=end):
+                if accepted:
+                    c.brief(data)
+                else:
+                    with self.assertRaisesRegex(c.Invalid, 'two full years'):
+                        c.brief(data)
+
     def test_reported_claim_requires_evidence(self):
         data = sourced()
         data['research']['claims'][1]['evidence'] = []

@@ -18,3 +18,5 @@ Read the README, research-led strategy, implementation plan, and narrative playb
 - Research the organization before designing a demo. Use a recognizable slice by default and target tens of thousands of order lines.
 - Declare dimensions, hierarchy relationships, keys, grain and effective dates before generating facts. Keep customers separate from their multiple purchasers.
 - Review the proposed slice, dimension blueprint and stories together before generation. Label reported facts, inferences, unknowns and synthetic assumptions.
+
+- Require at least two full years of transaction history. Design for comparable YoY periods, explicitly separating new/lost entities and fiscal-calendar differences. YoY observations are not causal effects.

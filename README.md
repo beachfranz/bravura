@@ -21,7 +21,7 @@ See [workflow documentation](docs/workflow.md) for contracts, the external-agent
 
 ## Agreed direction
 
-Research the target organization first, then propose a recognizable business slice with declared dimensions and hierarchies, multiple purchasers per customer, and tens of thousands of transaction rows. Review the dimension blueprint and stories together before generation.
+Research the target organization first, then propose a recognizable business slice with declared dimensions and hierarchies, multiple purchasers per customer, and tens of thousands of transaction rows spanning at least two full years. Year-over-year comparisons are a core requirement. Review the dimension blueprint and stories together before generation.
 
 ## Design references
 

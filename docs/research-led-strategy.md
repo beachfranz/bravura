@@ -59,7 +59,9 @@ Hierarchies must be acyclic. Declare whether every child has one parent or wheth
 
 Declare each fact's grain, primary key, foreign keys, dates, measures and allocation policy. Initial candidates are order headers and lines, shipments and shipment-line allocations, returns linked to sold lines, effective-dated costs, account plans and customer activity. Split shipments require explicit allocation records; shipment totals must never repeat as additive measures on every line.
 
-The default engineering fixture targets 50,000 order lines over 24 months; both are configurable and provisional implementation defaults. Related table counts derive from the business model rather than being independently forced to the same row count. Tens of thousands of rows must contain repeated account/purchaser behavior, long-tail products, seasonality, variation and routine exceptions—not repeated copies of a handful of records. Company-specific history may require a different window.
+Every demo must contain at least two full years (24 months) of transaction history. The default engineering fixture targets 50,000 order lines; volume and longer history remain configurable. Related table counts derive from the business model rather than being independently forced to the same row count. Tens of thousands of rows must contain repeated account/purchaser behavior, long-tail products, seasonality, variation and routine exceptions—not repeated copies of a handful of records. Company-specific history may require a longer window.
+
+Year-over-year comparisons are a core demo requirement: support revenue, volume, gross profit and contribution by comparable month, quarter and year, with drill-down by declared dimensions. Align fiscal periods, cutoff coverage and metric definitions; distinguish new/lost products and accounts from matched populations. A two-year window supports a full-year comparison, but not two years of monthly YoY observations; use three years for that. Leap days and 53-week fiscal years require explicit comparison policies. YoY changes are observations, not isolated causal effects.
 
 ## Scenario design
 
