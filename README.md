@@ -4,7 +4,7 @@ Generate coherent synthetic business data with discoverable business situations,
 
 ## Current status
 
-The first authoring milestone is implemented: research-role contracts and a bounded runner, evidence and dimension validation, offline replay, HTML review packets, and explicit version-bound design approval. Live retrieval/model integration, transaction generation and blind analyst evaluation are not implemented. The supplied Signal package is a worked reference, not Bravura's architecture or required industry.
+The first authoring milestone is implemented: research-role contracts and a bounded runner, evidence and dimension validation, offline replay, HTML review packets, and explicit version-bound design approval. The Apple v0.2 generator now produces and validates a 50,000-line synthetic release with a separate answer key. Live retrieval/model integration and blind analyst evaluation are not implemented. The supplied Signal package is a worked reference, not Bravura's architecture or required industry.
 
 ## Run the first milestone
 
@@ -18,6 +18,10 @@ PYTHONPATH=src python -m unittest discover -s tests -v
 Open `outputs/demo-001/review.html`. This is a clearly fictional test fixture, not real company research or generated transactions. Use a fresh output directory for each run.
 
 See [workflow documentation](docs/workflow.md) for contracts, the external-agent adapter, validation and approval commands.
+
+## Generate the Apple slice
+
+See [generation instructions and validation evidence](docs/generation.md). The release covers 30 months, 300 accounts and three interacting mechanisms, with explicit simulation and isolation limitations. Generated files remain outside Git.
 
 ## Agreed direction
 

@@ -1,0 +1,145 @@
+{
+  "schema_version": 1,
+  "seed": 20261028,
+  "start_date": "2024-01-01",
+  "end_date": "2026-06-30",
+  "cutoff": "2026-10-28",
+  "order_lines": 50000,
+  "accounts": 300,
+  "seasonality": [
+    90,
+    85,
+    100,
+    95,
+    100,
+    110,
+    90,
+    95,
+    115,
+    105,
+    125,
+    135
+  ],
+  "catalog": [
+    {
+      "category": "iPhone",
+      "family": "iPhone",
+      "version": "15",
+      "available_from": "2023-09-22",
+      "price_cents": 100000,
+      "source_url": "https://www.apple.com/newsroom/2023/09/apple-debuts-iphone-15-and-iphone-15-plus/"
+    },
+    {
+      "category": "iPhone",
+      "family": "iPhone",
+      "version": "16",
+      "available_from": "2024-09-20",
+      "price_cents": 100000,
+      "source_url": "https://www.apple.com/newsroom/2024/09/apple-introduces-iphone-16-and-iphone-16-plus/"
+    },
+    {
+      "category": "Mac",
+      "family": "MacBook Air",
+      "version": "M2",
+      "available_from": "2022-07-15",
+      "price_cents": 120000,
+      "source_url": "https://www.apple.com/newsroom/2022/07/all-new-macbook-air-with-m2-available-to-order-starting-friday-july-8/"
+    },
+    {
+      "category": "Mac",
+      "family": "MacBook Air",
+      "version": "M3",
+      "available_from": "2024-03-08",
+      "price_cents": 120000,
+      "source_url": "https://www.apple.com/newsroom/2024/03/apple-unveils-the-new-13-and-15-inch-macbook-air-with-the-powerful-m3-chip/"
+    },
+    {
+      "category": "Mac",
+      "family": "MacBook Air",
+      "version": "M4",
+      "available_from": "2025-03-12",
+      "price_cents": 120000,
+      "source_url": "https://www.apple.com/newsroom/2025/03/apple-introduces-the-new-macbook-air-with-the-m4-chip-and-a-sky-blue-color/"
+    },
+    {
+      "category": "iPad",
+      "family": "iPad Air",
+      "version": "M1",
+      "available_from": "2022-03-18",
+      "price_cents": 70000,
+      "source_url": "https://www.apple.com/newsroom/2022/03/apple-introduces-the-most-powerful-and-versatile-ipad-air-ever/"
+    },
+    {
+      "category": "iPad",
+      "family": "iPad Air",
+      "version": "M2",
+      "available_from": "2024-05-15",
+      "price_cents": 70000,
+      "source_url": "https://www.apple.com/newsroom/2024/05/apple-unveils-the-redesigned-11-inch-and-all-new-13-inch-ipad-air-with-m2/"
+    },
+    {
+      "category": "iPad",
+      "family": "iPad Air",
+      "version": "M3",
+      "available_from": "2025-03-12",
+      "price_cents": 70000,
+      "source_url": "https://www.apple.com/newsroom/2025/03/apple-introduces-ipad-air-with-powerful-m3-chip-and-new-magic-keyboard/"
+    }
+  ],
+  "margin": {
+    "cost_uplift_bp": 500,
+    "premium_mix_bp": 1000
+  },
+  "accounts_scenario": {
+    "accounts": [
+      "C0003",
+      "C0007"
+    ],
+    "service_account": "C0003",
+    "retention_bp": 7000
+  },
+  "promotion": {
+    "unit_uplift_bp": 2000,
+    "direct": {
+      "discount_bp": 800,
+      "program_bp": 200,
+      "return_rate_bp": 400
+    },
+    "reseller": {
+      "discount_bp": 2500,
+      "program_bp": 1200,
+      "return_rate_bp": 1800
+    }
+  },
+  "bounds": {
+    "margin_sales_yoy": [
+      0.05,
+      0.15
+    ],
+    "margin_contribution_yoy": [
+      -0.2,
+      -0.05
+    ],
+    "account_sales_yoy": [
+      -0.35,
+      -0.2
+    ],
+    "unaffected_account_sales_yoy": [
+      -0.05,
+      0.1
+    ],
+    "promotion_units_lift": [
+      0.1,
+      0.25
+    ]
+  },
+  "assumptions": [
+    "Synthetic USD commercial prices, costs, configuration bands and accounts; not Apple actual prices or costs.",
+    "Selected legacy generations can remain in synthetic reseller supply through June 2026; no complete/current Apple catalog claim.",
+    "Availability dates are public launch lower bounds; exact local launch dates not claimed.",
+    "Calendar YoY, not Apple fiscal-year reporting.",
+    "Refresh offer repeats April-June 2026 to test cost/promotion overlap.",
+    "Monthly repeat-order structure, fixed order-line count; interventions change units and mix, not number of rows.",
+    "One shipment per order and at most one return per line; no inventory simulation."
+  ]
+}

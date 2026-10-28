@@ -22,6 +22,10 @@ def main(argv=None):
     adapter.add_argument("--replay", metavar="DIRECTORY")
     adapter.add_argument("--agent-command", help='JSON argument array, e.g. ["python", "adapter.py"]')
     run.add_argument("--out", required=True)
+    generate = sub.add_parser("generate", help="Generate an approved Apple v0.2 dataset and answer key")
+    generate.add_argument("config")
+    generate.add_argument("--approval", required=True)
+    generate.add_argument("--out", required=True)
     validate = sub.add_parser("validate", help="Validate a complete authoring bundle")
     validate.add_argument("bundle")
     render = sub.add_parser("render", help="Build a review packet from a validated bundle")
@@ -44,6 +48,9 @@ def main(argv=None):
             backend = workflow.Replay(args.replay) if args.replay else workflow.Command(json.loads(args.agent_command))
             workflow.run(read(args.brief), backend, args.out)
             print(f"Review packet: {Path(args.out) / 'review.html'} ({backend.mode}; awaiting user review)")
+        elif args.action == "generate":
+            from .release import generate
+            print(json.dumps(generate(read(args.config), read(args.approval), args.out), indent=2))
         elif args.action == "validate":
             c.bundle(read(args.bundle))
             print("PASS: authoring contracts. Source truth, generation and blind evaluation not verified.")

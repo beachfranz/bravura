@@ -1,6 +1,6 @@
 # Research-to-blueprint workflow v0.1
 
-This release implements authoring contracts, five role assignments, a bounded role runner, an external-agent command interface, offline replay, review packet rendering and explicit design approval. It does not implement web retrieval, a model provider, transaction generation, row-level data validation or isolated analyst evaluation.
+This release implements authoring contracts, five role assignments, a bounded role runner, an external-agent command interface, offline replay, review packet rendering and explicit design approval. This page describes the v0.1 authoring workflow. Apple v0.2 adds transaction generation and row-level checks; see [generation.md](generation.md). Web retrieval/model integration and isolated analyst evaluation remain unimplemented.
 
 ## Quick start (Python 3.11+)
 

@@ -1,6 +1,6 @@
 # Apple demo research and blueprint
 
-Status: proposed, awaiting user review; no transactions generated or design approval recorded.
+Status: user approved the slice and story direction. The v0.2 generator and validation are implemented; generation-bundle.json and generation-config.json contain the completed implementation contract. The original bundle.json retains the earlier review packet. See ../../docs/generation.md.
 
 Target audience: commercial finance leadership and CRO. Proposed slice: 50,000 lines over January 2024–June 2026, 300 fictional business accounts with 2–5 purchasers each, iPhone/MacBook Air/iPad Air, and US/UK/India/mainland-China markets. Apple regions guide rollups; internal territories and operational detail are synthetic.
 

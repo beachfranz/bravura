@@ -1,5 +1,9 @@
 # Initial implementation plan
 
+## Current generation milestone
+
+Apple v0.2 generation is implemented and verified at 50,000 lines across 30 months. See [generation documentation](generation.md) for the five-state validation, seed checks and supported scope. Live research backend and full isolated analyst evaluation remain unimplemented. Earlier assessments below are historical.
+
 ## Baseline assessment
 
 Update: v0.1 implements authoring contracts, five bounded role calls through replay or a trusted command adapter, structural evidence/dimension checks, review packet rendering and explicit hash-bound design approval. These are verified by offline tests. Live retrieval/model integration is not implemented or tested; neither generation nor blind evaluation is implemented. See [workflow documentation](workflow.md). The original empty-repository assessment below is historical.
