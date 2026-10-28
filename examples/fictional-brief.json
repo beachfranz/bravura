@@ -1,0 +1,22 @@
+{
+  "schema_version": 1,
+  "target": "Northstar Components (fictional test organization)",
+  "audience": "Commercial finance leadership",
+  "purpose": "Review margin recovery and account retention in a fictional distributor slice.",
+  "questions": [
+    "Where does growth conceal weaker contribution?",
+    "Which account declines have supporting service evidence?"
+  ],
+  "constraints": [
+    "All business details are fictional; no real company research."
+  ],
+  "mode": "recognizable_slice",
+  "start_date": "2024-01-01",
+  "end_date": "2025-12-31",
+  "reporting_cutoff": "2025-12-31",
+  "order_lines": 50000,
+  "budget": {
+    "sources_per_role": 5,
+    "timeout_seconds": 60
+  }
+}

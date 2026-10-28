@@ -1,0 +1,261 @@
+{
+  "slice": "Fictional B2B components sales across two territories and three product families.",
+  "exclusions": [
+    "Company-wide reconciliation",
+    "Actual customer identities",
+    "Inventory availability claims"
+  ],
+  "economic_policy": "Decimal money; gross profit = revenue minus product cost; contribution further subtracts allocated fulfillment and program costs. Missing cost blocks profitability. Refunds and recovery are applied once. No realized benefit is claimed.",
+  "overlap_policy": "Store affected records; compare combined state to baseline and report interaction residual separately.",
+  "dimensions": [
+    {
+      "id": "product",
+      "grain": "One sellable SKU",
+      "primary_key": "product_id",
+      "attributes": {
+        "product_id": "string",
+        "category_id": "string",
+        "family_id": "string"
+      },
+      "hierarchy": [
+        {
+          "id": "category",
+          "key": "category_id",
+          "parent": null
+        },
+        {
+          "id": "family",
+          "key": "family_id",
+          "parent": "category"
+        },
+        {
+          "id": "sku",
+          "key": "product_id",
+          "parent": "family"
+        }
+      ],
+      "unknown_policy": "Reject unresolved required keys; optional attributes use an explicit unknown member.",
+      "history_policy": "Effective-dated versions; order date selects exactly one version.",
+      "generation_rule": "Deterministic synthetic members with heterogeneous attributes.",
+      "provenance": {
+        "kind": "synthetic",
+        "claim_ids": [],
+        "rationale": "Fictional integration fixture, not researched company structure."
+      }
+    },
+    {
+      "id": "sales_territory",
+      "grain": "One sales territory",
+      "primary_key": "territory_id",
+      "attributes": {
+        "territory_id": "string",
+        "region_id": "string",
+        "country_id": "string"
+      },
+      "hierarchy": [
+        {
+          "id": "region",
+          "key": "region_id",
+          "parent": null
+        },
+        {
+          "id": "country",
+          "key": "country_id",
+          "parent": "region"
+        },
+        {
+          "id": "territory",
+          "key": "territory_id",
+          "parent": "country"
+        }
+      ],
+      "unknown_policy": "Reject unresolved required keys; optional attributes use an explicit unknown member.",
+      "history_policy": "Effective-dated versions; order date selects exactly one version.",
+      "generation_rule": "Deterministic synthetic members with heterogeneous attributes.",
+      "provenance": {
+        "kind": "synthetic",
+        "claim_ids": [],
+        "rationale": "Fictional integration fixture, not researched company structure."
+      }
+    },
+    {
+      "id": "customer",
+      "grain": "One commercial account",
+      "primary_key": "customer_id",
+      "attributes": {
+        "customer_id": "string",
+        "parent_id": "string",
+        "industry": "string",
+        "tier": "string"
+      },
+      "hierarchy": [
+        {
+          "id": "parent",
+          "key": "parent_id",
+          "parent": null
+        },
+        {
+          "id": "account",
+          "key": "customer_id",
+          "parent": "parent"
+        }
+      ],
+      "unknown_policy": "Reject unresolved required keys; optional attributes use an explicit unknown member.",
+      "history_policy": "Effective-dated versions; order date selects exactly one version.",
+      "generation_rule": "Deterministic synthetic members with heterogeneous attributes.",
+      "provenance": {
+        "kind": "synthetic",
+        "claim_ids": [],
+        "rationale": "Fictional integration fixture, not researched company structure."
+      }
+    },
+    {
+      "id": "purchaser",
+      "grain": "One individual buyer assigned to an account",
+      "primary_key": "purchaser_id",
+      "attributes": {
+        "purchaser_id": "string",
+        "customer_id": "string",
+        "role": "string"
+      },
+      "hierarchy": [],
+      "unknown_policy": "Reject unresolved required keys; optional attributes use an explicit unknown member.",
+      "history_policy": "Effective-dated versions; order date selects exactly one version.",
+      "generation_rule": "Stable synthetic keys; 2\u20135 purchasers per commercial account.",
+      "provenance": {
+        "kind": "synthetic",
+        "claim_ids": [],
+        "rationale": "Fictional integration fixture, not researched company structure."
+      }
+    },
+    {
+      "id": "calendar",
+      "grain": "One calendar day",
+      "primary_key": "date_id",
+      "attributes": {
+        "date_id": "date",
+        "fiscal_year": "integer",
+        "fiscal_quarter": "string",
+        "month_id": "string"
+      },
+      "hierarchy": [
+        {
+          "id": "year",
+          "key": "fiscal_year",
+          "parent": null
+        },
+        {
+          "id": "quarter",
+          "key": "fiscal_quarter",
+          "parent": "year"
+        },
+        {
+          "id": "month",
+          "key": "month_id",
+          "parent": "quarter"
+        },
+        {
+          "id": "day",
+          "key": "date_id",
+          "parent": "month"
+        }
+      ],
+      "unknown_policy": "Reject unresolved required keys; optional attributes use an explicit unknown member.",
+      "history_policy": "Effective-dated versions; order date selects exactly one version.",
+      "generation_rule": "Deterministic synthetic members with heterogeneous attributes.",
+      "provenance": {
+        "kind": "synthetic",
+        "claim_ids": [],
+        "rationale": "Fictional integration fixture, not researched company structure."
+      }
+    }
+  ],
+  "relationships": [
+    {
+      "id": "purchaser_customer",
+      "from": "purchaser",
+      "to": "customer",
+      "foreign_key": "customer_id",
+      "cardinality": "many_to_one",
+      "temporal_rule": "Purchaser must belong to the order account on order date.",
+      "aggregation_rule": "Sum order-line revenue once by customer; never multiply by purchaser count."
+    }
+  ],
+  "facts": [
+    {
+      "id": "order_lines",
+      "grain": "One product on an order line",
+      "primary_key": "order_line_id",
+      "date_field": "order_date",
+      "dimension_keys": {
+        "product": "product_id",
+        "sales_territory": "territory_id",
+        "customer": "customer_id",
+        "purchaser": "purchaser_id",
+        "calendar": "date_id"
+      },
+      "measures": [
+        "quantity",
+        "net_sales",
+        "product_cost",
+        "gross_profit",
+        "allocated_fulfillment_cost",
+        "variable_program_cost",
+        "contribution"
+      ],
+      "allocation_policy": "Allocate shipment costs once to lines; allocations reconcile to shipment totals."
+    }
+  ],
+  "stories": [
+    {
+      "id": "margin",
+      "title": "Growth with weaker contribution",
+      "status": "simulated",
+      "mechanism": "Increase effective supplier costs, shift demand toward lower-margin SKUs, and raise expedite usage.",
+      "scope": "Selected product families; overlap with affected accounts.",
+      "comparison_basis": "Prior-year observations; evaluator-only no-event counterfactual.",
+      "timing": "Events begin 2025-07-01; service precedes account reduction by 30 days.",
+      "effect_bounds": "Proposed: sales change +2% to +12%; contribution change -5% to -25%.",
+      "operational_evidence": [
+        "Orders joined to product and customer dimensions",
+        "Effective costs and allocated shipment costs",
+        "Purchaser activity and shipment timing"
+      ],
+      "alternatives": [
+        "Intentional commercial concessions",
+        "Seasonality or changes in purchase mix"
+      ],
+      "prohibited_claims": [
+        "Actual company financial impact",
+        "Competitor loss or definitive churn without evidence"
+      ],
+      "claim_ids": [],
+      "synthetic_rationale": "Mechanism test only; not inspired by an actual news event."
+    },
+    {
+      "id": "accounts",
+      "title": "Two declining accounts, one partial explanation",
+      "status": "simulated",
+      "mechanism": "Reduce purchasing at two accounts; preceding service disruption is observable for only one.",
+      "scope": "Two commercial accounts, aggregating all their purchasers.",
+      "comparison_basis": "Account plan and prior year; no causal interpretation of those gaps.",
+      "timing": "Events begin 2025-07-01; service precedes account reduction by 30 days.",
+      "effect_bounds": "Proposed: each affected account sales -15% to -35%; unaffected cohort -5% to +10%.",
+      "operational_evidence": [
+        "Orders joined to product and customer dimensions",
+        "Effective costs and allocated shipment costs",
+        "Purchaser activity and shipment timing"
+      ],
+      "alternatives": [
+        "Intentional commercial concessions",
+        "Seasonality or changes in purchase mix"
+      ],
+      "prohibited_claims": [
+        "Actual company financial impact",
+        "Competitor loss or definitive churn without evidence"
+      ],
+      "claim_ids": [],
+      "synthetic_rationale": "Mechanism test only; not inspired by an actual news event."
+    }
+  ]
+}

@@ -1,0 +1,16 @@
+{
+  "claim_reviews": [
+    {
+      "claim_id": "structure_gap",
+      "disposition": "unresolved",
+      "reason": "Fictional company has no sources; this is explicitly a synthetic fixture."
+    }
+  ],
+  "blockers": [],
+  "warnings": [
+    "Replay validates workflow only, not live research.",
+    "50,000 lines is a proposed generation target, not generated output.",
+    "Supplemental shipment, cost and activity fact contracts must be completed before generation."
+  ],
+  "blueprint_assessment": "Suitable for testing the design-review workflow. All organization-specific details are synthetic; not approved for generation."
+}

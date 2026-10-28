@@ -2,6 +2,8 @@
 
 ## Baseline assessment
 
+Update: v0.1 implements authoring contracts, five bounded role calls through replay or a trusted command adapter, structural evidence/dimension checks, review packet rendering and explicit hash-bound design approval. These are verified by offline tests. Live retrieval/model integration is not implemented or tested; neither generation nor blind evaluation is implemented. See [workflow documentation](workflow.md). The original empty-repository assessment below is historical.
+
 The GitHub repository was empty when inspected. No pre-existing Bravura implementation or project instructions were available. Business mechanisms, multi-table coherence, deterministic economics, baseline variation, scenario overlap, answer keys, reproducibility, and fresh-context evaluation are all proposed capabilities, not verified Bravura behavior.
 
 The Signal reference includes generators and operational CSVs. Reading its existing files and recalculating totals does not establish regeneration, analyst isolation, or fresh-context evaluation. Its packaged scenario run records seed 78123, while the README example uses 73191. It has ten operational tables and no inventory snapshots. The standalone audit is historical.
