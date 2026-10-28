@@ -1,0 +1,25 @@
+{
+  "schema_version": 1,
+  "target": "Apple-inspired commercial device sales",
+  "audience": "Commercial finance leadership and Chief Revenue Officer (CRO)",
+  "purpose": "Investigate valuable revenue growth, regional/account performance, and contribution in a synthetic business-device slice informed by Apple disclosures.",
+  "questions": [
+    "Which product and territory combinations grow revenue and contribution together?",
+    "Where do pricing, mix, fulfillment and returns weaken growth?",
+    "Which account declines warrant recovery versus further discovery?"
+  ],
+  "constraints": [
+    "Apple is the research target, not a source of private transaction records.",
+    "Reported financial totals are context, not targets for this B2B slice.",
+    "No implication that Apple has the specific CRO role or simulated commercial problems."
+  ],
+  "mode": "recognizable_slice",
+  "start_date": "2024-01-01",
+  "end_date": "2026-06-30",
+  "reporting_cutoff": "2026-10-28",
+  "order_lines": 50000,
+  "budget": {
+    "sources_per_role": 5,
+    "timeout_seconds": 60
+  }
+}
