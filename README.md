@@ -6,8 +6,13 @@ Generate coherent synthetic business data with discoverable business situations,
 
 Repository foundation only. No Bravura generator or analyst evaluation has been implemented yet. The supplied Signal package is a worked reference, not Bravura's architecture, required industry, or verified implementation.
 
+## Agreed direction
+
+Research the target organization first, then propose a recognizable business slice with declared dimensions and hierarchies, multiple purchasers per customer, and tens of thousands of transaction rows. Review the dimension blueprint and stories together before generation.
+
 ## Design references
 
+- [Research-led strategy and agent contracts](docs/research-led-strategy.md)
 - [Narrative generation playbook](docs/reference/Bravura_Narrative_Generation_Playbook.md)
 - [Scenario contract design template](docs/reference/Scenario_Contract_Template.json)
 - [Implementation plan and release gates](docs/implementation-plan.md)

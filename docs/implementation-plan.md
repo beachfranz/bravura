@@ -6,6 +6,12 @@ The GitHub repository was empty when inspected. No pre-existing Bravura implemen
 
 The Signal reference includes generators and operational CSVs. Reading its existing files and recalculating totals does not establish regeneration, analyst isolation, or fresh-context evaluation. Its packaged scenario run records seed 78123, while the README example uses 73191. It has ten operational tables and no inventory snapshots. The standalone audit is historical.
 
+## Research-first prerequisites
+
+The [research-led strategy](research-led-strategy.md) defines the agreed product direction. Before generation, implement the demo brief, bounded research-agent roles, shared evidence record, declared dimension blueprint, and one-page review packet. The user reviews the recognizable slice and stories together. Apple remains an example; no target has been selected.
+
+Design for tens of thousands of order lines. Use a configurable 50,000-line, 24-month engineering fixture initially; related table sizes follow their declared grain. Core dimensions include product, sales territory, customer, multiple purchasers per customer, and calendar. Add other dimensions as required by the slice.
+
 ## Smallest end-to-end slice
 
 Start with a local Python command-line generator using standard-library CSV, JSON, decimal arithmetic, hashing, seeded randomness, and unittest. This is a new implementation choice, not a migration. No paid service, LLM API, database, or agent framework is required for generation.
