@@ -1,0 +1,697 @@
+{
+  "schema_version": 1,
+  "brief": {
+    "schema_version": 1,
+    "target": "Apple-inspired commercial device sales",
+    "audience": "Commercial finance leadership and Chief Revenue Officer (CRO)",
+    "purpose": "Investigate valuable revenue growth, regional/account performance, and contribution in a synthetic business-device slice informed by Apple disclosures.",
+    "questions": [
+      "Which product and territory combinations grow revenue and contribution together?",
+      "Where do pricing, mix, fulfillment and returns weaken growth?",
+      "Which account declines warrant recovery versus further discovery?"
+    ],
+    "constraints": [
+      "Apple is the research target, not a source of private transaction records.",
+      "Reported financial totals are context, not targets for this B2B slice.",
+      "No implication that Apple has the specific CRO role or simulated commercial problems."
+    ],
+    "mode": "recognizable_slice",
+    "start_date": "2024-01-01",
+    "end_date": "2026-06-30",
+    "reporting_cutoff": "2026-10-28",
+    "order_lines": 50000,
+    "budget": {
+      "sources_per_role": 5,
+      "timeout_seconds": 60
+    }
+  },
+  "research": {
+    "sources": [
+      {
+        "id": "structure_10k",
+        "title": "Apple FY2025 Form 10-K",
+        "url": "https://www.sec.gov/Archives/edgar/data/320193/000032019325000079/aapl-20250927.htm",
+        "published_date": "2025-10-31",
+        "accessed_date": "2026-10-28",
+        "snapshot_text": "Americas, Europe, Greater China, Japan and Rest of Asia Pacific."
+      },
+      {
+        "id": "financial_fy25",
+        "title": "Apple FY2025 consolidated financial statements",
+        "url": "https://www.apple.com/newsroom/pdfs/fy2025-q4/FY25_Q4_Consolidated_Financial_Statements.pdf",
+        "published_date": "2025-10-30",
+        "accessed_date": "2026-10-28",
+        "snapshot_text": "Net sales by reportable segment:"
+      },
+      {
+        "id": "developments_air",
+        "title": "Apple M4 MacBook Air announcement",
+        "url": "https://www.apple.com/newsroom/2025/03/apple-introduces-the-new-macbook-air-with-the-m4-chip-and-a-sky-blue-color/",
+        "published_date": "2025-03-05",
+        "accessed_date": "2026-10-28",
+        "snapshot_text": "a lower starting price"
+      },
+      {
+        "id": "developments_manufacturing",
+        "title": "Apple American Manufacturing Program announcement",
+        "url": "https://www.apple.com/newsroom/2025/08/apple-increases-us-commitment-to-600-billion-usd-announces-ambitious-program/",
+        "published_date": "2025-08-06",
+        "accessed_date": "2026-10-28",
+        "snapshot_text": "a new $100 billion commitment to America"
+      },
+      {
+        "id": "financial_q326",
+        "title": "Apple fiscal Q3 2026 results",
+        "url": "https://www.apple.com/newsroom/2026/07/apple-reports-third-quarter-results/",
+        "published_date": "2026-07-30",
+        "accessed_date": "2026-10-28",
+        "snapshot_text": "quarterly revenue of $109.4 billion"
+      }
+    ],
+    "claims": [
+      {
+        "id": "structure_regions",
+        "statement": "Apple reports five regions. Its Europe segment also includes India, the Middle East and Africa; Greater China includes mainland China, Hong Kong and Taiwan.",
+        "status": "reported",
+        "scope": "FY2025 geographic reporting definitions; lower sales territories will be synthetic.",
+        "period_start": "2024-09-29",
+        "period_end": "2025-09-27",
+        "evidence": [
+          {
+            "source_id": "structure_10k",
+            "excerpt": "Americas, Europe, Greater China, Japan and Rest of Asia Pacific.",
+            "location": "Business / Products; Segments; Markets and Distribution"
+          }
+        ]
+      },
+      {
+        "id": "financial_regions",
+        "statement": "FY2025/FY2024 regional revenue (USD millions): Americas 178353/167045; Europe 111032/101328; Greater China 64377/66952; Japan 28703/25052; Rest of Asia Pacific 33696/30658. Total 416161/391035.",
+        "status": "reported",
+        "scope": "Company-wide fiscal-year totals including Services, not the proposed B2B device slice.",
+        "period_start": "2023-10-01",
+        "period_end": "2025-09-27",
+        "evidence": [
+          {
+            "source_id": "financial_fy25",
+            "excerpt": "Net sales by reportable segment:",
+            "location": "Page 1: twelve-month columns, USD millions"
+          }
+        ]
+      },
+      {
+        "id": "financial_products",
+        "statement": "FY2025/FY2024 revenue (USD millions): iPhone 209586/201183; Mac 33708/29984; iPad 28023/26694; Wearables, Home and Accessories 35686/37005; Services 109158/96169.",
+        "status": "reported",
+        "scope": "Company-wide product categories; regional intersections and SKU margins are not supplied by this table.",
+        "period_start": "2023-10-01",
+        "period_end": "2025-09-27",
+        "evidence": [
+          {
+            "source_id": "financial_fy25",
+            "excerpt": "Net sales by reportable segment:",
+            "location": "Page 1: twelve-month columns, USD millions"
+          }
+        ]
+      },
+      {
+        "id": "developments_price",
+        "statement": "Apple announced M4 MacBook Air on March 5, 2025, with availability March 12; the US 13-inch starting price was $999, $100 lower than before.",
+        "status": "reported",
+        "scope": "US public starting price, not worldwide realized B2B price or proof of weak margins.",
+        "period_start": "2025-03-05",
+        "period_end": "2025-03-12",
+        "evidence": [
+          {
+            "source_id": "developments_air",
+            "excerpt": "a lower starting price",
+            "location": "Announcement and Pricing and Availability"
+          }
+        ]
+      },
+      {
+        "id": "developments_supply",
+        "statement": "Apple announced an additional $100 billion US commitment on August 6, 2025, taking its four-year commitment to $600 billion and introducing the American Manufacturing Program.",
+        "status": "reported",
+        "scope": "Company announcement; not realized expenditure, tariff savings, or evidence of SKU cost changes.",
+        "period_start": "2025-08-06",
+        "period_end": "2025-08-06",
+        "evidence": [
+          {
+            "source_id": "developments_manufacturing",
+            "excerpt": "a new $100 billion commitment to America",
+            "location": "Opening announcement; four-year commitment, not realized savings"
+          }
+        ]
+      },
+      {
+        "id": "financial_recent",
+        "statement": "For fiscal Q3 2026 ended June 27, Apple reported revenue of $109.4 billion, up 16% YoY, and gross margin of 50.1%, including about two percentage points of favorable tariff refunds.",
+        "status": "reported",
+        "scope": "Company-wide quarterly result; do not treat refund-assisted gross margin as recurring demo contribution.",
+        "period_start": "2026-03-29",
+        "period_end": "2026-06-27",
+        "evidence": [
+          {
+            "source_id": "financial_q326",
+            "excerpt": "quarterly revenue of $109.4 billion",
+            "location": "Quarter ended June 27, 2026; revenue and tariff refund commentary"
+          }
+        ]
+      },
+      {
+        "id": "structure_gaps",
+        "statement": "Public sources reviewed do not establish the proposed account/purchaser identities, transaction prices, SKU costs, service failures or product-by-region B2B sales.",
+        "status": "unknown",
+        "scope": "Proposed synthetic device slice",
+        "period_start": "2024-01-01",
+        "period_end": "2026-06-30",
+        "evidence": [],
+        "gap": "Invent and label these operational details; do not claim they describe Apple customers or actual account behavior."
+      }
+    ]
+  },
+  "blueprint": {
+    "slice": "50,000 synthetic order lines, January 2024\u2013June 2026. iPhone, MacBook Air and iPad Air sold to fictional business accounts in the US, UK, India and mainland China. Regions roll up to Americas, Europe and Greater China; Japan and Rest of Asia Pacific remain reference context. Start with 300 accounts and 2\u20135 purchasers per account (proposed).",
+    "exclusions": [
+      "Services, Wearables, retail-consumer identities, inventory and competitor claims",
+      "Reconciliation of this small B2B slice to Apple company-wide totals",
+      "Japan and Rest of Asia Pacific transaction populations in the first slice",
+      "Exact model/configuration catalog until availability dates are verified",
+      "Private Apple costs, account records, sales territories and forecasts"
+    ],
+    "economic_policy": "USD synthetic reporting prices and costs; no inferred FX gains. Gross profit = net sales minus effective product cost; contribution further subtracts allocated fulfillment and variable program costs. Refund plus restocking less recoverable cost is applied once. Decimal cent rounding, reconciliation to source shipment amounts, unknown cost blocks profit claims. Apple gross margin is context, not demo contribution. Show calendar-month YoY and matched/new/lost cohorts; Apple fiscal-year figures remain separately labeled. No realized action benefit is asserted.",
+    "overlap_policy": "One account cohort can participate in cost pressure and promotion. Store affected line IDs; baseline, each isolated mechanism and combined runs share stable random streams. Combined-minus-baseline effect minus isolated effects is the interaction residual. Never add overlapping opportunity estimates. Revision v0.3 adds heterogeneous account size, acquisition ramp-up, temporary dormancy and sustained purchase inactivity as structural baseline dynamics. These coexist with all three mechanisms; no lifecycle causal contrast is asserted.",
+    "dimensions": [
+      {
+        "id": "product",
+        "grain": "One sellable SKU",
+        "primary_key": "product_id",
+        "attributes": {
+          "product_id": "string",
+          "category_id": "string",
+          "family_id": "string",
+          "version_id": "string"
+        },
+        "hierarchy": [
+          {
+            "id": "category",
+            "key": "category_id",
+            "parent": null
+          },
+          {
+            "id": "family",
+            "key": "family_id",
+            "parent": "category"
+          },
+          {
+            "id": "version",
+            "key": "version_id",
+            "parent": "family"
+          },
+          {
+            "id": "sku",
+            "key": "product_id",
+            "parent": "version"
+          }
+        ],
+        "unknown_policy": "Reject unresolved required keys; optional attributes use an explicit unknown member.",
+        "history_policy": "Effective-dated versions; order date selects exactly one version.",
+        "generation_rule": "Apple-aligned category \u2192 family \u2192 version \u2192 synthetic SKU. Initial families: iPhone, MacBook Air, iPad Air. No version sold before its verified availability date; catalog completion is a generation prerequisite.",
+        "provenance": {
+          "kind": "synthetic",
+          "claim_ids": [
+            "financial_products"
+          ],
+          "rationale": "Reported category names anchor a proposed family/version/SKU hierarchy; detailed catalog is not yet verified."
+        }
+      },
+      {
+        "id": "sales_territory",
+        "grain": "One sales territory",
+        "primary_key": "territory_id",
+        "attributes": {
+          "territory_id": "string",
+          "region_id": "string",
+          "country_id": "string"
+        },
+        "hierarchy": [
+          {
+            "id": "region",
+            "key": "region_id",
+            "parent": null
+          },
+          {
+            "id": "country",
+            "key": "country_id",
+            "parent": "region"
+          },
+          {
+            "id": "territory",
+            "key": "territory_id",
+            "parent": "country"
+          }
+        ],
+        "unknown_policy": "Reject unresolved required keys; optional attributes use an explicit unknown member.",
+        "history_policy": "Effective-dated versions; order date selects exactly one version.",
+        "generation_rule": "Apple reporting region \u2192 country/market \u2192 synthetic sales territory. US\u2192Americas; UK and India\u2192Europe; mainland China\u2192Greater China.",
+        "provenance": {
+          "kind": "synthetic",
+          "claim_ids": [
+            "structure_regions"
+          ],
+          "rationale": "Reported regional definitions; selected countries and internal territory subdivisions are demo design."
+        }
+      },
+      {
+        "id": "customer",
+        "grain": "One commercial account",
+        "primary_key": "customer_id",
+        "attributes": {
+          "customer_id": "string",
+          "parent_id": "string",
+          "industry": "string",
+          "tier": "string"
+        },
+        "hierarchy": [
+          {
+            "id": "parent",
+            "key": "parent_id",
+            "parent": null
+          },
+          {
+            "id": "account",
+            "key": "customer_id",
+            "parent": "parent"
+          }
+        ],
+        "unknown_policy": "Reject unresolved required keys; optional attributes use an explicit unknown member.",
+        "history_policy": "Effective-dated versions; order date selects exactly one version.",
+        "generation_rule": "300 fictional business accounts, grouped into parent organizations; variable account sizes, industries and commercial tiers.",
+        "provenance": {
+          "kind": "synthetic",
+          "claim_ids": [],
+          "rationale": "Synthetic business slice; no actual Apple customers or internal calendars are asserted."
+        }
+      },
+      {
+        "id": "purchaser",
+        "grain": "One individual buyer assigned to an account",
+        "primary_key": "purchaser_id",
+        "attributes": {
+          "purchaser_id": "string",
+          "customer_id": "string",
+          "role": "string"
+        },
+        "hierarchy": [],
+        "unknown_policy": "Reject unresolved required keys; optional attributes use an explicit unknown member.",
+        "history_policy": "Effective-dated versions; order date selects exactly one version.",
+        "generation_rule": "2\u20135 fictional purchasers per account; role, cadence and product preference vary. Purchaser/account ownership must match every order date.",
+        "provenance": {
+          "kind": "synthetic",
+          "claim_ids": [],
+          "rationale": "Synthetic business slice; no actual Apple customers or internal calendars are asserted."
+        }
+      },
+      {
+        "id": "calendar",
+        "grain": "One calendar day",
+        "primary_key": "date_id",
+        "attributes": {
+          "date_id": "date",
+          "fiscal_year": "integer",
+          "fiscal_quarter": "string",
+          "month_id": "string"
+        },
+        "hierarchy": [
+          {
+            "id": "year",
+            "key": "fiscal_year",
+            "parent": null
+          },
+          {
+            "id": "quarter",
+            "key": "fiscal_quarter",
+            "parent": "year"
+          },
+          {
+            "id": "month",
+            "key": "month_id",
+            "parent": "quarter"
+          },
+          {
+            "id": "day",
+            "key": "date_id",
+            "parent": "month"
+          }
+        ],
+        "unknown_policy": "Reject unresolved required keys; optional attributes use an explicit unknown member.",
+        "history_policy": "Gregorian months and quarters for operational YoY. Fiscal-year context is separately labeled; implement verified Apple fiscal mapping before offering fiscal drill-downs.",
+        "generation_rule": "Deterministic synthetic members with heterogeneous attributes.",
+        "provenance": {
+          "kind": "synthetic",
+          "claim_ids": [],
+          "rationale": "Synthetic business slice; no actual Apple customers or internal calendars are asserted."
+        }
+      },
+      {
+        "id": "channel",
+        "grain": "One commercial channel",
+        "primary_key": "channel_id",
+        "attributes": {
+          "channel_id": "string"
+        },
+        "hierarchy": [],
+        "unknown_policy": "Explicit not-applicable member for no promotion; other required keys must resolve.",
+        "history_policy": "Effective-dated validity; transaction date resolves uniquely.",
+        "generation_rule": "Synthetic direct-business and reseller routes; separate route from customer type.",
+        "provenance": {
+          "kind": "synthetic",
+          "claim_ids": [],
+          "rationale": "Authoring assumption, not a disclosed Apple internal structure."
+        }
+      },
+      {
+        "id": "sales_organization",
+        "grain": "One sales representative",
+        "primary_key": "sales_rep_id",
+        "attributes": {
+          "sales_rep_id": "string",
+          "team_id": "string"
+        },
+        "hierarchy": [],
+        "unknown_policy": "Explicit not-applicable member for no promotion; other required keys must resolve.",
+        "history_policy": "Effective-dated validity; transaction date resolves uniquely.",
+        "generation_rule": "Synthetic team and account assignments, effective dated.",
+        "provenance": {
+          "kind": "synthetic",
+          "claim_ids": [],
+          "rationale": "Authoring assumption, not a disclosed Apple internal structure."
+        }
+      },
+      {
+        "id": "fulfillment_location",
+        "grain": "One fulfillment facility",
+        "primary_key": "location_id",
+        "attributes": {
+          "location_id": "string",
+          "country_id": "string"
+        },
+        "hierarchy": [],
+        "unknown_policy": "Explicit not-applicable member for no promotion; other required keys must resolve.",
+        "history_policy": "Effective-dated validity; transaction date resolves uniquely.",
+        "generation_rule": "Synthetic warehouses; do not imply actual Apple facilities.",
+        "provenance": {
+          "kind": "synthetic",
+          "claim_ids": [],
+          "rationale": "Authoring assumption, not a disclosed Apple internal structure."
+        }
+      },
+      {
+        "id": "supplier",
+        "grain": "One synthetic cost-source supplier",
+        "primary_key": "supplier_id",
+        "attributes": {
+          "supplier_id": "string"
+        },
+        "hierarchy": [],
+        "unknown_policy": "Explicit not-applicable member for no promotion; other required keys must resolve.",
+        "history_policy": "Effective-dated validity; transaction date resolves uniquely.",
+        "generation_rule": "Fictional supplier names and component exposures; not actual vendor costs.",
+        "provenance": {
+          "kind": "synthetic",
+          "claim_ids": [],
+          "rationale": "Authoring assumption, not a disclosed Apple internal structure."
+        }
+      },
+      {
+        "id": "promotion",
+        "grain": "One offer",
+        "primary_key": "promotion_id",
+        "attributes": {
+          "promotion_id": "string",
+          "campaign_id": "string"
+        },
+        "hierarchy": [],
+        "unknown_policy": "Explicit not-applicable member for no promotion; other required keys must resolve.",
+        "history_policy": "Effective-dated validity; transaction date resolves uniquely.",
+        "generation_rule": "Synthetic offers with explicit eligibility and effective dates; one offer per line initially.",
+        "provenance": {
+          "kind": "synthetic",
+          "claim_ids": [],
+          "rationale": "Authoring assumption, not a disclosed Apple internal structure."
+        }
+      }
+    ],
+    "relationships": [
+      {
+        "id": "purchaser_customer",
+        "from": "purchaser",
+        "to": "customer",
+        "foreign_key": "customer_id",
+        "cardinality": "many_to_one",
+        "temporal_rule": "Purchaser must belong to the order account on order date.",
+        "aggregation_rule": "Sum order-line revenue once by customer; never multiply by purchaser count."
+      }
+    ],
+    "facts": [
+      {
+        "id": "order_lines",
+        "grain": "One product on an order line",
+        "primary_key": "order_line_id",
+        "date_field": "order_date",
+        "dimension_keys": {
+          "product": "product_id",
+          "sales_territory": "territory_id",
+          "customer": "customer_id",
+          "purchaser": "purchaser_id",
+          "calendar": "date_id",
+          "channel": "channel_id",
+          "sales_organization": "sales_rep_id",
+          "promotion": "promotion_id"
+        },
+        "measures": [
+          "quantity",
+          "net_sales",
+          "product_cost",
+          "gross_profit",
+          "allocated_fulfillment_cost",
+          "variable_program_cost",
+          "contribution"
+        ],
+        "allocation_policy": "Allocate shipment costs once to lines; allocations reconcile to shipment totals."
+      },
+      {
+        "id": "shipments",
+        "grain": "One shipment for an order",
+        "primary_key": "shipment_id",
+        "date_field": "ship_date",
+        "dimension_keys": {
+          "fulfillment_location": "location_id",
+          "calendar": "date_id"
+        },
+        "measures": [
+          "freight_cost",
+          "handling_cost",
+          "expedite_cost"
+        ],
+        "allocation_policy": "Shipment-to-line bridge allocates once and reconciles totals."
+      },
+      {
+        "id": "returns",
+        "grain": "One return event against a sold order line",
+        "primary_key": "return_id",
+        "date_field": "return_date",
+        "dimension_keys": {
+          "product": "product_id",
+          "customer": "customer_id",
+          "calendar": "date_id"
+        },
+        "measures": [
+          "returned_quantity",
+          "refund_amount",
+          "restocking_cost",
+          "recoverable_inventory_value"
+        ],
+        "allocation_policy": "Cumulative returns cannot exceed sold quantity; references original order_line_id."
+      },
+      {
+        "id": "cost_history",
+        "grain": "One product cost version over a valid interval",
+        "primary_key": "cost_version_id",
+        "date_field": "effective_start",
+        "dimension_keys": {
+          "product": "product_id",
+          "supplier": "supplier_id"
+        },
+        "measures": [
+          "unit_cost"
+        ],
+        "allocation_policy": "One effective version per product/date; no overlapping periods."
+      },
+      {
+        "id": "account_activity",
+        "grain": "One purchaser/account interaction",
+        "primary_key": "activity_id",
+        "date_field": "activity_date",
+        "dimension_keys": {
+          "customer": "customer_id",
+          "purchaser": "purchaser_id",
+          "calendar": "date_id"
+        },
+        "measures": [
+          "interaction_count"
+        ],
+        "allocation_policy": "Routine activity across comparison accounts; explicit event and knowledge dates."
+      },
+      {
+        "id": "account_plans",
+        "grain": "One account-month plan",
+        "primary_key": "plan_id",
+        "date_field": "month_start",
+        "dimension_keys": {
+          "customer": "customer_id",
+          "calendar": "date_id"
+        },
+        "measures": [
+          "planned_sales",
+          "planned_contribution"
+        ],
+        "allocation_policy": "Plans approved before measurement period; not counterfactual causal estimates."
+      }
+    ],
+    "stories": [
+      {
+        "id": "margin",
+        "title": "Growth that does not translate into contribution",
+        "status": "simulated",
+        "mechanism": "Simulate increased cost on selected devices plus richer low-margin mix and expedited delivery; retain healthy-growth peers. Manufacturing news motivates a supply-cost question but establishes none of these effects.",
+        "scope": "Selected US and UK business-device cohorts",
+        "claim_ids": [
+          "developments_supply"
+        ],
+        "timing": "Synthetic cost event January 2026; compare January\u2013June 2026 with the same 2025 months.",
+        "effect_bounds": "Proposed affected cohort sales YoY +5% to +15%; contribution YoY -5% to -20%.",
+        "comparison_basis": "Observed matched-period YoY and plan/peer comparisons remain separate from evaluator-only baseline causal effects.",
+        "operational_evidence": [
+          "Order-line product, account, purchaser, territory and channel keys",
+          "Effective costs, shipment allocations and linked returns",
+          "Account plans and routine customer activity"
+        ],
+        "alternatives": [
+          "Intentional fixed-price commitments",
+          "Product-generation mix and order-size changes"
+        ],
+        "prohibited_claims": [
+          "These losses or service issues actually occurred at Apple",
+          "Competitor loss or definitive churn without evidence",
+          "YoY or nonpromotion benchmark gaps prove causal lift"
+        ]
+      },
+      {
+        "id": "accounts",
+        "title": "A few accounts explain a territory shortfall",
+        "status": "simulated",
+        "mechanism": "Simulate weaker purchasing at two mainland-China accounts. One has preceding unresolved delivery issues; the other has no supported explanation. Aggregate all purchasers and show stable comparison accounts.",
+        "scope": "Two synthetic accounts in a Greater China territory",
+        "claim_ids": [
+          "financial_regions"
+        ],
+        "timing": "Synthetic disruption February 2025; purchasing falls after 30 days; compare equal months and plan.",
+        "effect_bounds": "Each affected account sales -20% to -35%; unaffected matched-account cohort -5% to +10%.",
+        "comparison_basis": "Observed matched-period YoY and plan/peer comparisons remain separate from evaluator-only baseline causal effects.",
+        "operational_evidence": [
+          "Order-line product, account, purchaser, territory and channel keys",
+          "Effective costs, shipment allocations and linked returns",
+          "Account plans and routine customer activity"
+        ],
+        "alternatives": [
+          "Purchase timing or normal refresh cycles",
+          "A buyer-role change with incomplete context"
+        ],
+        "prohibited_claims": [
+          "These losses or service issues actually occurred at Apple",
+          "Competitor loss or definitive churn without evidence",
+          "YoY or nonpromotion benchmark gaps prove causal lift"
+        ]
+      },
+      {
+        "id": "promotion",
+        "title": "Device refresh volume grows, but offer economics vary",
+        "status": "simulated",
+        "mechanism": "Inspired by the lower MacBook Air entry price, simulate a distinct B2B offer with volume response, discounts, program expense, expedited shipments and returns; some cohorts stay profitable.",
+        "scope": "MacBook Air cohorts across US, UK and India",
+        "claim_ids": [
+          "developments_price"
+        ],
+        "timing": "Synthetic offer April\u2013June 2025, after March 12 availability; eligible generation mapping must be verified.",
+        "effect_bounds": "Promoted-cohort units +10% to +25% against private baseline; at least one cohort contribution below zero, one above zero.",
+        "comparison_basis": "Observed matched-period YoY and plan/peer comparisons remain separate from evaluator-only baseline causal effects.",
+        "operational_evidence": [
+          "Order-line product, account, purchaser, territory and channel keys",
+          "Effective costs, shipment allocations and linked returns",
+          "Account plans and routine customer activity"
+        ],
+        "alternatives": [
+          "Cannibalization of adjacent devices",
+          "Customer mix and return timing"
+        ],
+        "prohibited_claims": [
+          "These losses or service issues actually occurred at Apple",
+          "Competitor loss or definitive churn without evidence",
+          "YoY or nonpromotion benchmark gaps prove causal lift"
+        ]
+      }
+    ]
+  },
+  "review": {
+    "claim_reviews": [
+      {
+        "claim_id": "structure_regions",
+        "disposition": "accepted",
+        "reason": "Human-readable source and relevant table inspected in this authoring session; excerpt is only a short locator, not the entire evidence."
+      },
+      {
+        "claim_id": "financial_regions",
+        "disposition": "accepted",
+        "reason": "Human-readable source and relevant table inspected in this authoring session; excerpt is only a short locator, not the entire evidence."
+      },
+      {
+        "claim_id": "financial_products",
+        "disposition": "accepted",
+        "reason": "Human-readable source and relevant table inspected in this authoring session; excerpt is only a short locator, not the entire evidence."
+      },
+      {
+        "claim_id": "developments_price",
+        "disposition": "accepted",
+        "reason": "Human-readable source and relevant table inspected in this authoring session; excerpt is only a short locator, not the entire evidence."
+      },
+      {
+        "claim_id": "developments_supply",
+        "disposition": "accepted",
+        "reason": "Human-readable source and relevant table inspected in this authoring session; excerpt is only a short locator, not the entire evidence."
+      },
+      {
+        "claim_id": "financial_recent",
+        "disposition": "accepted",
+        "reason": "Human-readable source and relevant table inspected in this authoring session; excerpt is only a short locator, not the entire evidence."
+      },
+      {
+        "claim_id": "structure_gaps",
+        "disposition": "unresolved",
+        "reason": "Invent and label these operational details; do not claim they describe Apple customers or actual account behavior."
+      }
+    ],
+    "blockers": [],
+    "warnings": [
+      "Research performed with web tools in this authoring session, not the unimplemented live model adapter or independent agents.",
+      "Accepted source claims do not approve simulated scenarios or establish causal mechanisms.",
+      "Current FY2026 Q3 reported growth prevents treating FY2025 Greater China softness as an ongoing region-wide decline.",
+      "Research cutoff October 28, 2026; operational transactions end June 30, 2026. Later research is context only, not backdated operational evidence.",
+      "Calendar periods in demo are not Apple fiscal reporting periods; published regional figures include Services and consumers.",
+      "Generation implementation selects eight legacy model generations with verified launch lower bounds, synthetic configuration bands and assumed reseller sell-through; not a complete current Apple catalog. The refresh offer repeats in 2026 to exercise overlap. Public launch dates are not independently verified country-by-country."
+    ],
+    "blueprint_assessment": "User approved slice and story direction: Looks great. Run with it. Catalog lower bounds and executable mechanism parameters completed by implementer; final combined release gates must pass before export."
+  },
+  "generation_config_sha256": "3f56255a961d1dc67e7d1ee72331cebdbbb3e85b6fa4e6cd415ab6aba709a4c0"
+}

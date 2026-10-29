@@ -1,3 +1,7 @@
+# Current revision
+
+Use [customer dynamics v0.3](customer-dynamics-v3.md) and `examples/apple/generation-config-v3.json` for the current live release. The v0.2 evidence below is historical.
+
 # Apple generation release v0.2
 
 The user approved the Apple slice and stories with “Looks great. Run with it.” The implementation completes the scoped catalog and numerical policies under that instruction. `examples/apple/generation-bundle.json` preserves the approved scope and binds `generation-config.json` by SHA-256. Original research remains in `bundle.json`.

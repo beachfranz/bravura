@@ -1,4 +1,6 @@
-# Supabase integration — loaded and verified
+# Supabase integration — v0.3 loaded and verified
+
+The October 29 customer-dynamics release supersedes the October 28 totals below. See [current deployment and validation](customer-dynamics-v3.md). `bravura_demo` retains its connection name and 24-table structure. `hex_reader` now has explicit SELECT grants and RLS policies; Hex has successfully queried the earlier release. Historical setup details follow.
 
 Target supplied by the user: `https://udczuujwgyqgibfkuszg.supabase.co`.
 

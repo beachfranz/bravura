@@ -21,6 +21,9 @@ for seed in (20261029,20261030):
         if name=='combined':
             report=validate(tables,cfg)
     checks=scenario_checks(cfg,states,affected)
+    if cfg.get('customer_dynamics'):
+        from bravura.customer_audit import audit
+        checks['checks'].update(audit(tables)['checks'])
     results[str(seed)]={'checks':checks['checks'],'combined_assertions':report['assertions'],
                         'interaction_residual':checks['interaction_residual']}
 Path(args.out).write_text(json.dumps(results,indent=2,sort_keys=True)+'\n')

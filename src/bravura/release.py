@@ -34,6 +34,11 @@ def validate_config(cfg):
     c.require(cfg.get('accounts')==300,'v0.2 requires 300 accounts')
     c.require(len(cfg['seasonality'])==12 and all(type(x) is int and x>0 for x in cfg['seasonality']), 'invalid seasonality')
     c.require(set(cfg['accounts_scenario']['accounts'])=={'C0003','C0007'} and cfg['accounts_scenario']['service_account']=='C0003', 'unsupported account cohort')
+    if cfg.get('customer_dynamics'):
+        d=cfg['customer_dynamics']
+        for key in ('large_account_scale_bp','anchor_growth_bp','new_account_discount_bp'):
+            c.integer(d.get(key),key,0,1000000)
+        c.require(d['large_account_scale_bp']>=10000 and d['new_account_discount_bp']<=5000,'invalid customer economics')
     for p in cfg['catalog']:
         c.require(p['family'] in ('iPhone','MacBook Air','iPad Air'),'unsupported family')
         c.day(p['available_from'],'availability')
@@ -210,7 +215,7 @@ def overview(scenarios, counts):
 <h2>Promotion tradeoff</h2><ul>{promo}</ul><p>Both annual synthetic refresh offers, April–June 2025 and 2026. The source news does not establish these outcomes at Apple.</p>
 <h2>Overlap and evidence strength</h2><p>{scenarios['overlap_lines']:,} lines participate in both margin pressure and promotion. The private interaction residual for contribution after returns is ${scenarios['interaction_residual']['contribution_after_returns']/100:,.2f}. It is reported separately, not silently counted as an isolated effect.</p>
 <p>Account C0003 has preceding delivery and unresolved service evidence. C0007 declines without a supported operational cause. The evaluator knows the purchasing mechanism; the analyst should preserve uncertainty.</p>
-<h2>Validation</h2><p>All 12 scenario/plausibility gates passed. Keys, grains, purchaser ownership, product availability, effective costs, cents-level financial identities, shipment allocations, returns and cutoff checks passed for baseline, isolated and combined states. Combined regeneration matched exactly.</p>
+<h2>Validation</h2><p>All configured scenario/plausibility gates passed. Keys, grains, purchaser ownership, product availability, effective costs, cents-level financial identities, shipment allocations, returns and cutoff checks passed for baseline, isolated and combined states. Combined regeneration matched exactly.</p>
 <p>Operational ZIP allowlist and missing-private-path checks passed. Full environment isolation and fresh-context blind analyst evaluation were NOT RUN. Export separation alone is not an isolation guarantee.</p>
 <h2>Package contents</h2><ul><li>operational.zip: business CSVs and neutral dictionary; the only candidate analyst input.</li><li>answer_key.zip: parameters, approved design, affected records, baseline/isolated economics, evaluation and provenance.</li></ul>
 <h2>Operational table inventory</h2><table><tr><th>Table</th><th>Rows</th></tr>{inventory}</table>
@@ -242,6 +247,11 @@ def generate(cfg, approval, out):
     scenarios=scenario_checks(cfg,state_metrics,combined_affected)
     scenarios['checks']['baseline_return_rate']=.02<=baseline_rates['return_line_rate']<=.04
     scenarios['checks']['baseline_late_rate']=.05<=baseline_rates['late_shipment_rate']<=.09
+    if cfg.get('customer_dynamics'):
+        from .customer_audit import audit
+        customer_report = audit(combined)
+        dump(answer/'customer_story_audit.json',customer_report)
+        scenarios['checks'].update(customer_report['checks'])
     dump(answer/'scenario_evaluation.json',scenarios)
     dump(answer/'affected_records.json',combined_affected)
     dump(answer/'validation.json',{'states':validations,'baseline_rates':baseline_rates,

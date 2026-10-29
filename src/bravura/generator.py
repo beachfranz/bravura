@@ -12,7 +12,7 @@ from collections import Counter, defaultdict
 from datetime import date, timedelta
 from pathlib import Path
 
-VERSION = '0.2.0'
+VERSION = '0.3.0'
 SCENARIOS = ('margin', 'accounts', 'promotion')
 COUNTRIES = [('US','United States','Americas'), ('UK','United Kingdom','Europe'),
              ('IN','India','Europe'), ('CN','Mainland China','Greater China')]
@@ -52,6 +52,39 @@ def months(start, end):
         current = date(current.year+int(current.month==12), current.month%12+1, 1)
 
 
+def acquisition(cfg, i):
+    if not cfg.get('customer_dynamics') or i < 260:
+        return '2023-01-01'
+    return f"{2025 if i < 280 else 2026}-{1+(i%20)//4:02}-01"
+
+
+def customer_available(cfg, i, month):
+    if month.isoformat() < acquisition(cfg, i):
+        return False
+    if not cfg.get('customer_dynamics'):
+        return True
+    # Private purchase cessation is not an operational assertion of churn.
+    if 220 <= i < 240 and month >= date(2025, 7+(i%6), 1):
+        return False
+    if 240 <= i < 250 and date(2025, 4, 1) <= month < date(2025, 10, 1):
+        return False
+    return True
+
+
+def account_scale(cfg, i, month):
+    if not cfg.get('customer_dynamics'):
+        return 10000
+    d = cfg['customer_dynamics']
+    scale = d['large_account_scale_bp'] if i < 10 else 10000
+    if i < 3:
+        scale = rounded(scale * (10000 + d['anchor_growth_bp'] * (month.year-2024)))
+    if i >= 260:
+        acquired = date.fromisoformat(acquisition(cfg, i))
+        age = (month.year-acquired.year)*12+month.month-acquired.month
+        scale = rounded(scale * min(10000, 4000+age*2000))
+    return scale
+
+
 def dimensions(cfg):
     seed = cfg['seed']
     tables = {}
@@ -73,12 +106,12 @@ def dimensions(cfg):
             parent_id=f'G{i//3:03}',territory_id=f'{code}-{i%3+1}',country_code=code,
             sales_rep_id=f'SR{i%20:02}',channel_id='reseller' if i%3==0 else 'direct',
             industry=['Professional services','Education','Manufacturing','Healthcare','Technology'][i%5],
-            account_tier='Growth' if i%5==0 else 'Core',acquisition_date='2023-01-01'))
+            account_tier='Growth' if i%5==0 else 'Core',acquisition_date=acquisition(cfg, i)))
         locations.append(dict(customer_location_id=f'CL{i:04}',customer_id=cid,location_name='Primary office',country_code=code))
         for j in range(2+rng(seed,'buyers',i).randrange(4)):
             purchasers.append(dict(purchaser_id=f'P{i:04}-{j}',customer_id=cid,purchaser_name=f'Buyer {i:03}-{j}',
                 buyer_role=['Procurement','IT operations','Finance','Department lead','Administration'][j],
-                valid_from='2023-01-01',valid_to=cfg['cutoff']))
+                valid_from=acquisition(cfg, i),valid_to=cfg['cutoff']))
     tables.update(customers=customers,purchasers=purchasers,customer_locations=locations)
     tables['product_categories'] = [dict(category_id=k,category_name=v) for k,v in [('CAT1','iPhone'),('CAT2','Mac'),('CAT3','iPad')]]
     cat_ids={r['category_name']:r['category_id'] for r in tables['product_categories']}
@@ -141,10 +174,16 @@ def simulate(cfg, active=()):
     orders=[]; lines=[]; shipments=[]; allocations=[]; returns=[]; affected={s:[] for s in SCENARIOS}
     order_idx=0
     for m,count in zip(ms,counts):
+        eligible = [i for i in range(cfg['accounts']) if customer_available(cfg, i, m)]
         for k in range(count):
             # Customer/product preferences repeat seasonally; dates and return decisions vary by year.
             r=rng(seed,'demand',m.month,k)
             ci=k%cfg['accounts'] if k<cfg['accounts'] else r.randrange(cfg['accounts'])
+            if cfg.get('customer_dynamics'):
+                if ci not in eligible:
+                    ci = rng(seed, 'replacement', m.isoformat(), k).choice(eligible)
+                elif ci >= 10 and rng(seed, 'cadence', m.month, ci).random() < .18:
+                    ci = rng(seed, 'cadence-replacement', m.month, k).choice(eligible[:10])
             customer=tables['customers'][ci]; cid=customer['customer_id']; country=customer['country_code']
             day=min(1+r.randrange(calendar.monthrange(m.year,m.month)[1]),calendar.monthrange(m.year,m.month)[1])
             dt=date(m.year,m.month,day); ds=dt.isoformat()
@@ -166,10 +205,13 @@ def simulate(cfg, active=()):
                 candidates=[p for p in group if p['configuration_band']==tier]
                 p=r.choice(candidates)
                 quantity=rounded(r.randint(8,24)*(10000+500*(m.year-2024)))
+                quantity = max(1, rounded(quantity * account_scale(cfg, ci, m)))
                 if declined: quantity=max(1,rounded(quantity*cfg['accounts_scenario']['retention_bp']))
                 promo=('promotion' in active and m.year in (2025,2026) and 4<=m.month<=6 and
                        family=='MacBook Air' and country!='CN' and customer['account_tier']=='Growth')
                 discount=200+(ci%4)*100; program=0; promo_id='NONE'
+                if cfg.get('customer_dynamics') and ci >= 260:
+                    discount += cfg['customer_dynamics']['new_account_discount_bp']
                 if promo:
                     terms=cfg['promotion'][customer['channel_id']]
                     discount=terms['discount_bp']; program=terms['program_bp']; promo_id=f'CP{m.year}-{customer["channel_id"]}'
@@ -219,13 +261,15 @@ def simulate(cfg, active=()):
     activity=[]; plans=[]
     for m in ms:
         for ci,c in enumerate(tables['customers']):
+            if m.isoformat() < c['acquisition_date']:
+                continue
             cid=c['customer_id']; service='accounts' in active and cid==cfg['accounts_scenario']['service_account'] and m>=date(2025,2,1)
             ar=rng(seed,'activity',m.isoformat(),cid)
             reason='Delivery inquiry' if service or ar.random()<.06 else ar.choice(['Account review','Purchase planning','Product inquiry'])
             activity.append(dict(activity_id=f'AC{len(activity)+1:06}',customer_id=cid,purchaser_id=buyers[cid][0],
                 activity_date=m.isoformat(),known_date=m.isoformat(),reason_code=reason,resolved='false' if service else 'true'))
             plans.append(dict(plan_id=f'PL{len(plans)+1:06}',customer_id=cid,month_start=m.isoformat(),
-                approved_date=(m-timedelta(days=15)).isoformat(),planned_sales_cents=5000000+(ci%7)*500000))
+                approved_date=(m-timedelta(days=15)).isoformat(),planned_sales_cents=rounded((5000000+(ci%7)*500000)*account_scale(cfg,ci,m))))
     tables.update(account_activity=activity,account_plans=plans)
     for product in tables['products']:
         del product['baseline_cost_cents']  # Authoring baseline must not leak in the product dimension.
