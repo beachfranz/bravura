@@ -12,8 +12,8 @@ from collections import Counter, defaultdict
 from datetime import date, timedelta
 from pathlib import Path
 
-VERSION = '0.3.0'
-SCENARIOS = ('margin', 'accounts', 'promotion')
+VERSION = '0.4.0'
+SCENARIOS = ('margin', 'accounts', 'promotion', 'quality')
 COUNTRIES = [('US','United States','Americas'), ('UK','United Kingdom','Europe'),
              ('IN','India','Europe'), ('CN','Mainland China','Greater China')]
 
@@ -172,6 +172,8 @@ def simulate(cfg, active=()):
                     discount_bp=cfg['promotion'][channel]['discount_bp'],program_cost_bp=cfg['promotion'][channel]['program_bp']))
     tables['promotions']=promos
     orders=[]; lines=[]; shipments=[]; allocations=[]; returns=[]; affected={s:[] for s in SCENARIOS}
+    from .recipes import QualityFeedback
+    quality = QualityFeedback(cfg.get('quality'), seed) if 'quality' in active else QualityFeedback(None, seed)
     order_idx=0
     for m,count in zip(ms,counts):
         eligible = [i for i in range(cfg['accounts']) if customer_available(cfg, i, m)]
@@ -216,6 +218,10 @@ def simulate(cfg, active=()):
                     terms=cfg['promotion'][customer['channel_id']]
                     discount=terms['discount_bp']; program=terms['program_bp']; promo_id=f'CP{m.year}-{customer["channel_id"]}'
                     quantity=rounded(quantity*(10000+cfg['promotion']['unit_uplift_bp']))
+                prior_quantity = quantity
+                quantity = quality.quantity(cid, ds, quantity)
+                if quantity != prior_quantity:
+                    affected['quality'].append(lid)
                 cv=f'CV-{p["product_id"]}-{country}-{m.year}'
                 unit_price=rounded(p['list_price_cents']*(10000-discount))
                 revenue=quantity*unit_price; cost=quantity*costs[cv]['unit_cost_cents']
@@ -246,6 +252,10 @@ def simulate(cfg, active=()):
                 ret_rng=rng(seed,'return',line['order_line_id'])
                 rate=.03
                 if line['promotion_id']!='NONE': rate=cfg['promotion'][customer['channel_id']]['return_rate_bp']/10000
+                quality_event = quality.applies(line)
+                if quality_event:
+                    rate = max(rate, cfg['quality']['return_rate_bp']/10000)
+                    affected['quality'].append(line['order_line_id'])
                 if ret_rng.random()<rate:
                     qty=max(1,rounded(line['quantity']*ret_rng.randint(2000,6000)))
                     refund=qty*line['net_unit_price_cents']; restock=qty*1000
@@ -254,6 +264,9 @@ def simulate(cfg, active=()):
                         return_date=(delivery+timedelta(days=ret_rng.randint(7,35))).isoformat(),returned_quantity=qty,
                         return_reason=ret_rng.choice(['Compatibility','Order adjustment','Transit damage']),refund_cents=refund,
                         restocking_cents=restock,recoverable_value_cents=recovery,net_return_cost_cents=refund+restock-recovery))
+                    if quality_event:
+                        returns[-1]['return_reason'] = 'Intermittent failure'
+                        quality.record(line, returns[-1])
                 lines.append(line)
             orders.append(dict(order_id=oid,order_date=ds,customer_id=cid,purchaser_id=pid,
                 bill_to_location_id=f'CL{ci:04}',ship_to_location_id=f'CL{ci:04}',sales_rep_id=customer['sales_rep_id'],currency='USD'))
@@ -270,6 +283,10 @@ def simulate(cfg, active=()):
                 activity_date=m.isoformat(),known_date=m.isoformat(),reason_code=reason,resolved='false' if service else 'true'))
             plans.append(dict(plan_id=f'PL{len(plans)+1:06}',customer_id=cid,month_start=m.isoformat(),
                 approved_date=(m-timedelta(days=15)).isoformat(),planned_sales_cents=rounded((5000000+(ci%7)*500000)*account_scale(cfg,ci,m))))
+    for event in quality.events:
+        activity.append(dict(activity_id=f'AC{len(activity)+1:06}',customer_id=event['customer_id'],
+            purchaser_id=event['purchaser_id'],activity_date=event['return_date'],known_date=event['return_date'],
+            reason_code='Product reliability inquiry',resolved='false' if quality.responds(event['customer_id']) else 'true'))
     tables.update(account_activity=activity,account_plans=plans)
     for product in tables['products']:
         del product['baseline_cost_cents']  # Authoring baseline must not leak in the product dimension.

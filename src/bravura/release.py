@@ -39,11 +39,20 @@ def validate_config(cfg):
         for key in ('large_account_scale_bp','anchor_growth_bp','new_account_discount_bp'):
             c.integer(d.get(key),key,0,1000000)
         c.require(d['large_account_scale_bp']>=10000 and d['new_account_discount_bp']<=5000,'invalid customer economics')
+    from .recipes import validate_quality
+    validate_quality(cfg.get('quality'))
     for p in cfg['catalog']:
         c.require(p['family'] in ('iPhone','MacBook Air','iPad Air'),'unsupported family')
         c.day(p['available_from'],'availability')
         c.integer(p['price_cents'],'price',100,10000000)
         c.text(p['source_url'],'catalog source')
+    if cfg.get('quality'):
+        from .generator import dimensions
+        products={p['product_id']:p for p in dimensions(cfg)['products']}
+        q=cfg['quality']
+        c.require(all(k in products and products[k]['available_from']<=q['start_date'] for k in q['product_ids']), 'quality product unavailable')
+        c.require(cfg['start_date']<=q['start_date']<=q['end_date']<=cfg['end_date'], 'quality outside transaction history')
+        c.require(q['lag_days']>=32, 'monthly adapter requires at least 32-day feedback lag')
     for family in ('iPhone','MacBook Air','iPad Air'):
         c.require(any(p['family']==family and p['available_from']<=cfg['start_date'] for p in cfg['catalog']), 'family unavailable at start')
     for x in (cfg['margin']['cost_uplift_bp'],cfg['margin']['premium_mix_bp'],cfg['accounts_scenario']['retention_bp'],cfg['promotion']['unit_uplift_bp']):
@@ -207,7 +216,7 @@ def overview(scenarios, counts):
     inventory=''.join(f'<tr><td>{esc(k)}</td><td>{v:,}</td></tr>' for k,v in counts.items())
     return f"""<!doctype html><html lang="en"><meta charset="utf-8"><meta name="viewport" content="width=device-width"><title>Bravura Apple demo release</title>
 <style>body{{font:16px/1.6 system-ui;background:#f3f6f3;color:#163c33;margin:0}}main{{max-width:1050px;margin:32px auto;padding:32px;background:white}}h1{{font-size:36px}}table{{border-collapse:collapse;width:100%;font-size:14px}}td,th{{padding:10px;text-align:left;border-bottom:1px solid #ddd}}.note{{padding:16px;background:#fff1d5}}.scroll{{overflow:auto}}</style><main>
-<p>BRAVURA / APPLE-INSPIRED DEMO / AUTHORING RESULTS</p><h1>{counts['order_lines']:,} lines. 30 months. Three interacting stories.</h1>
+<p>BRAVURA / APPLE-INSPIRED DEMO / AUTHORING RESULTS</p><h1>{counts['order_lines']:,} lines. 30 months. Interacting business stories.</h1>
 <p>January 2024–June 2026 · {counts['customers']:,} fictional accounts · {counts['purchasers']:,} purchasers · USD synthetic economics</p>
 <p class="note">This report contains the answer key. Do not give it to a blind analyst. Apple product names and regional definitions provide context; customers, prices, costs and events are simulated.</p>
 <h2>Observed comparisons in the combined dataset</h2><div class="scroll"><table><tr><th>Population and metric</th><th>Prior period</th><th>Current period</th><th>YoY</th></tr>{rows}</table></div>
@@ -252,6 +261,12 @@ def generate(cfg, approval, out):
         customer_report = audit(combined)
         dump(answer/'customer_story_audit.json',customer_report)
         scenarios['checks'].update(customer_report['checks'])
+    from .recipes import quality_audit, recipe_catalog
+    dump(answer/'recipe_catalog.json', recipe_catalog())
+    if cfg.get('quality'):
+        quality_report = quality_audit(combined, cfg['quality'])
+        dump(answer/'quality_story_audit.json',quality_report)
+        scenarios['checks'].update(quality_report['checks'])
     dump(answer/'scenario_evaluation.json',scenarios)
     dump(answer/'affected_records.json',combined_affected)
     dump(answer/'validation.json',{'states':validations,'baseline_rates':baseline_rates,
@@ -306,7 +321,7 @@ def generate(cfg, approval, out):
     (answer/'overview.html').write_text(summary)
     (out/'OVERVIEW.html').write_text(summary)
     zip_directory(answer,out/'answer_key.zip')
-    (out/'README.txt').write_text('Bravura Apple demo v0.2\n\noperational.zip: synthetic business records and neutral dictionary.\nanswer_key.zip: authoring/evaluator-only configuration, approved design, baseline and isolated states, effects and validation.\nNever give answer_key.zip, this repository, or the authoring blueprint to a blind analyst.\nNo fresh-context analyst test or full filesystem access-isolation test was run. ZIP allowlist tests are not that isolation proof.\nSee answer_key/scenario_evaluation.json for observed YoY versus private intervention effects. Money is integer USD cents.\n')
+    (out/'README.txt').write_text(f'Bravura Apple demo {VERSION}\n\noperational.zip: synthetic business records and neutral dictionary.\nanswer_key.zip: authoring/evaluator-only configuration, approved design, baseline and isolated states, effects and validation.\nNever give answer_key.zip, this repository, or the authoring blueprint to a blind analyst.\nNo fresh-context analyst test or full filesystem access-isolation test was run. ZIP allowlist tests are not that isolation proof.\nSee answer_key/scenario_evaluation.json for observed YoY versus private intervention effects. Money is integer USD cents.\n')
     zip_directory(out,out/'Bravura_Apple_Demo.zip',['README.txt','OVERVIEW.html','operational.zip','answer_key.zip'])
     return {'rows':len(combined['order_lines']),'purchasers':len(combined['purchasers']),
             'scenario_checks':scenarios['checks'],'totals':scenarios['totals']['combined'],

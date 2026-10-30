@@ -40,3 +40,9 @@ Financial reconciliation (integer USD cents): revenue 90,619,154,300; gross prof
 Hosted checks found zero cost/version/date mismatches, zero shipment or line fulfillment-allocation discrepancies, zero invalid return quantities/dates, and zero unvalidated database constraints. All 24 tables have RLS enabled. Neither anon nor authenticated has schema usage. The security advisor returned only 24 informational [RLS enabled without policies](https://supabase.com/docs/guides/database/database-linter?lint=0008_rls_enabled_no_policy) findings: intentional default-deny access pending a dedicated reader role. Owner access is available in the Supabase dashboard by selecting `bravura_demo`.
 
 Generator validation remains the source of the broader combined-scenario checks; not every generator invariant is implemented as a database constraint. Dedicated analyst access, negative access tests, and a fresh-context analyst evaluation remain pending. The public repository contains authoring material and must not be available to the blind analyst.
+
+## v0.4 update
+
+The verified v0.4 combined release now occupies `bravura_demo`. All 24 table counts and sorted row-content fingerprints matched the release before activation. The previous live data is preserved in `bravura_archive_v3`, without `hex_reader` access. Current data has 50,000 lines, 1,871 returns and 8,590 account activities. Full-period sales before returns are $1,541,780,627; contribution after returns is $385,383,360.63. Supersedes earlier totals.
+
+The two operational queries in `sql/returns-investigation.sql` execute successfully against the live data. Hex application refresh is separate from database activation. Blind access-negative testing remains not run. Security advisors report only the existing 24 informational missing-policy notices for the intentionally inaccessible rejected v3 staging schema.

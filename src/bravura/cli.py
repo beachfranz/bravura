@@ -14,6 +14,7 @@ def read(path):
 def main(argv=None):
     parser = argparse.ArgumentParser(prog="bravura")
     sub = parser.add_subparsers(dest="action", required=True)
+    sub.add_parser("recipes", help="Print versioned authoring story recipes")
     plan = sub.add_parser("plan", help="Print the five bounded research assignments")
     plan.add_argument("brief")
     run = sub.add_parser("research", help="Run replay fixtures or a trusted external agent adapter")
@@ -22,7 +23,7 @@ def main(argv=None):
     adapter.add_argument("--replay", metavar="DIRECTORY")
     adapter.add_argument("--agent-command", help='JSON argument array, e.g. ["python", "adapter.py"]')
     run.add_argument("--out", required=True)
-    generate = sub.add_parser("generate", help="Generate an approved Apple v0.2 dataset and answer key")
+    generate = sub.add_parser("generate", help="Generate an approved Apple dataset and answer key")
     generate.add_argument("config")
     generate.add_argument("--approval", required=True)
     generate.add_argument("--out", required=True)
@@ -41,7 +42,10 @@ def main(argv=None):
     verify.add_argument("bundle")
     args = parser.parse_args(argv)
     try:
-        if args.action == "plan":
+        if args.action == "recipes":
+            from .recipes import recipe_catalog
+            print(json.dumps(recipe_catalog(), indent=2))
+        elif args.action == "plan":
             spec = c.brief(read(args.brief))
             print(json.dumps([workflow.request(role, spec, {}) for role in workflow.ROLES], indent=2))
         elif args.action == "research":

@@ -54,3 +54,7 @@ The JSON template is design guidance, not an executable or supported schema.
 Authoring can use the source code, reference materials, scenario definitions, and answer key. Blind analysts receive only an allowlisted operational export, neutral data dictionary, metric policy, and reporting cutoff in a separate environment. Repository access would expose the answers and invalidate a blind test.
 
 Generated datasets, credentials, and local environment files must not be committed. Record seeds, configurations, dependency versions, and content checksums so released datasets can be reproduced.
+
+## Reusable stories and returns feedback
+
+The v0.4 [recipe process](docs/scenario-recipes.md) provides five versioned authoring recipes and a portable returns-to-purchasing mechanism. `python -m bravura recipes` lists their parameters, evidence, comparisons and limits. Apple v0.4 binds the new mechanism to a fictional configuration and preserves the prior stories. [Operational returns queries](sql/returns-investigation.sql) support product return rates, financial impact and equal-window customer follow-up.
